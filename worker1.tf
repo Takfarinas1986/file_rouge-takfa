@@ -6,7 +6,7 @@ variable "myname-worker1" {
 
 resource "aws_instance" "example1" {
   ami           = "ami-0cbd40f694b804622"  # Remplacez par une AMI appropriée
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   key_name      = aws_key_pair.example.key_name
   #security_groups = [aws_security_group.example.name]
   subnet_id       = aws_subnet.example.id
@@ -16,6 +16,7 @@ resource "aws_instance" "example1" {
 }
 resource "aws_subnet" "example" {
 vpc_id     = aws_vpc.takfa-vpc.id
+map_public_ip_on_launch = true
 cidr_block = "10.0.0.0/16"
 tags = {
   Name = "example"

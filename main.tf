@@ -27,6 +27,13 @@ resource "aws_security_group" "example" {
   name        = "${var.myname}-security-group"
   description = "Security group for SSH traffic"
   vpc_id = aws_vpc.takfa-vpc.id
+  ingress {
+    from_port = 6443
+    to_port = 6443
+    protocol = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]
+    description = "kubernetes-conexion"
+  }
 
   ingress {
     from_port   = 22
@@ -44,11 +51,12 @@ resource "aws_security_group" "example" {
   }
 }
 
-resource "aws_instance" "example" {
+resource "aws_instance" "controlleur" {
   ami           = "ami-0cbd40f694b804622"  # Remplacez par une AMI appropriée
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   key_name      = aws_key_pair.example.key_name
   #security_groups = [aws_security_group.example.name]
+  subnet_id       = aws_subnet.example.id
   tags = {
     Name = var.myname
   }
